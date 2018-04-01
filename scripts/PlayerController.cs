@@ -15,13 +15,20 @@ public class PlayerController : MonoBehaviour {
     // animator, 2d sprite
     private Animator anim;
     private Vector3 selfPos;
-    
+    private Rigidbody2D myPlayerRigidbody2D;
+
     private void Awake()
     {
-        anim = GetComponent<Animator>();
         if (photonView.isMine)
         {
+            anim = GetComponent<Animator>();
+            myPlayerRigidbody2D = GetComponent<Rigidbody2D>();
+
+            // activate player camera
             plCam.SetActive(true);
+
+            // set player collisions to dynamic so it can collide with kinematic objects
+            myPlayerRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 
