@@ -24,9 +24,6 @@ public class PlayerController : MonoBehaviour {
             anim = GetComponent<Animator>();
             myPlayerRigidbody2D = GetComponent<Rigidbody2D>();
 
-            // activate player camera
-            plCam.SetActive(true);
-
             // set player collisions to dynamic so it can collide with kinematic objects
             myPlayerRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         }
@@ -59,6 +56,19 @@ public class PlayerController : MonoBehaviour {
 
         anim.SetFloat("MoveX", horizontal);
         anim.SetFloat("MoveY", vertical);
+    }
+
+    void OnTriggerEnter2D(Collider2D wpn)
+    {
+        Debug.Log(wpn);
+        // disable collider trigger, or it will be colliding all the time now the weapon is equipped and rendered on top of the player
+        wpn.isTrigger = false;
+        // equip weapon
+        this.gameObject.transform.GetChild(0).GetComponent<WeaponManager>().activeWeapon = wpn.gameObject;
+        // initialize to render the weapon's sprite
+        this.gameObject.transform.GetChild(0).GetComponent<WeaponManager>().initialize();
+        // remove the weapon from the floor
+        Destroy(wpn.gameObject);
     }
 
     private void smoothNetMovement() {

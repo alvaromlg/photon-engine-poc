@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class photonHandler : MonoBehaviour
 {
@@ -63,6 +64,18 @@ public class photonHandler : MonoBehaviour
 
     private void spawnPlayer()
     {
-        PhotonNetwork.Instantiate(mainPlayer.name, mainPlayer.transform.position, mainPlayer.transform.rotation, 0);
+        // respawn player
+        GameObject player = PhotonNetwork.Instantiate(mainPlayer.name, mainPlayer.transform.position, mainPlayer.transform.rotation, 0);
+
+        // Get main camera
+        GameObject playerCamera = GameObject.FindWithTag("MainCamera");
+
+        // follow player script
+        CameraController followScript = playerCamera.GetComponent("CameraController") as CameraController;
+        followScript.target = player;
+
+        // assign cam to the player to calculate player camera mouse position (used for attacks)
+        PlayerController controller = player.GetComponent<PlayerController>();
+        controller.plCam = playerCamera;
     }
 }

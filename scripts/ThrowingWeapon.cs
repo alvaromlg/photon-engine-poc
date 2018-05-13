@@ -17,5 +17,5 @@ public class ThrowingWeapon : MonoBehaviour {
 	void Start () {
 		
 	}
-	
+
 }
